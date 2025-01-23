@@ -1,6 +1,8 @@
 package com.myjar.jarassignment.ui.composables
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -45,7 +48,10 @@ fun AppNavigation(
         }
         composable("item_detail/{itemId}") { backStackEntry ->
             val itemId = backStackEntry.arguments?.getString("itemId")
-            ItemDetailScreen(itemId = itemId)
+            ItemDetailScreen(itemId = itemId) {
+                navController.navigateUp()
+                navigate.value = ""
+            }
         }
     }
 }
@@ -82,20 +88,44 @@ fun ItemListScreen(
 
 @Composable
 fun ItemCard(item: ComputerItem, onClick: () -> Unit) {
+
+    val data = item.data
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onClick() }
+            .clickable { onClick() },
+        verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
-        Text(text = item.name, fontWeight = FontWeight.Bold, color = Color.Transparent)
+        Text(text = item.name, fontWeight = FontWeight.Bold, color = Color.Black)
+
+
+        val commonTextStyle = TextStyle(color = Color.Gray, fontWeight = FontWeight.SemiBold)
+
+        data?.color?.let {
+            Text("Color: $it", style = commonTextStyle)
+        }
+
+        data?.price?.let {
+            Text("Price: $$it", style = commonTextStyle)
+        }
+
+        data?.description?.let {
+            Text("Price: $$it", style = commonTextStyle)
+        }
+
     }
 }
 
+
 @Composable
-fun ItemDetailScreen(itemId: String?) {
+fun ItemDetailScreen(itemId: String?, onBackPress: () -> Unit) {
     // Fetch the item details based on the itemId
     // Here, you can fetch it from the ViewModel or repository
+    BackHandler {
+        onBackPress()
+    }
     Text(
         text = "Item Details for ID: $itemId",
         modifier = Modifier
