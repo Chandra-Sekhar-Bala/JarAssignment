@@ -9,8 +9,8 @@ import java.lang.reflect.Type
 class PreferenceManager(context: Context) {
 
     private val sharedPref = context.getSharedPreferences("LIST_DATA", Context.MODE_PRIVATE)
-    val key = "LIST_DATA"
-    val gson = Gson()
+    private val key = "LIST_DATA"
+    private val gson = Gson()
 
     fun saveData(data: List<ComputerItem>) {
         val stringData = gson.toJson(data)

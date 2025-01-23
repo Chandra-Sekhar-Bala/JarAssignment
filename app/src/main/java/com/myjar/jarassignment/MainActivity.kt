@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.myjar.jarassignment.ui.vm.JarViewModel
 import com.myjar.jarassignment.ui.composables.AppNavigation
 import com.myjar.jarassignment.ui.theme.JarAssignmentTheme
@@ -22,8 +23,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val context = LocalContext.current
             LaunchedEffect(Unit) {
-                viewModel.fetchData()
+                viewModel.fetchData(context)
             }
             JarAssignmentTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
